@@ -34,26 +34,37 @@ import edu.ucla.cs.cs144.SearchRegion;
 import edu.ucla.cs.cs144.SearchResult;
 
 public class AuctionSearch implements IAuctionSearch {
-
-	/* 
-         * You will probably have to use JDBC to access MySQL data
-         * Lucene IndexSearcher class to lookup Lucene index.
-         * Read the corresponding tutorial to learn about how to use these.
-         *
-	 * You may create helper functions or classes to simplify writing these
-	 * methods. Make sure that your helper functions are not public,
-         * so that they are not exposed to outside of this class.
-         *
-         * Any new classes that you create should be part of
-         * edu.ucla.cs.cs144 package and their source files should be
-         * placed at src/edu/ucla/cs/cs144.
-         *
-         */
 	
 	public SearchResult[] basicSearch(String query, int numResultsToSkip, 
 			int numResultsToReturn) {
-		// TODO: Your code here!
-		return new SearchResult[0];
+		SearchResult[] results = new SearchResult[numResultsToReturn];
+		try {
+			//create new instance of search engine
+			IndexSearcher searcher = new IndexSearcher(DirectoryReader.open(FSDirectory.open(new File("/var/lib/lucene/ebay/"))));
+			QueryParser parser = new QueryParser("content", new StandardAnalyzer());
+
+			//retrieve top numResultsToSkip + numResultsToReturn results
+			Query q = parser.parse(query);
+			TopDocs topDocs = searcher.search(q, numResultsToSkip + numResultsToReturn);
+
+			//obtain ScoreDoc array from docs
+			ScoreDoc[] hits = topDocs.scoreDocs;
+
+			//retrieve matching documents after skipping numResultsToSkip
+			int curr = 0;
+			for (int i = numResultsToSkip - 1; i < hits.length; i++) {
+				Document doc = searcher.doc(hits[i].doc);
+				String id = doc.get("id");
+				String name = doc.get("name");
+				results[curr] = new SearchResult(id, name);
+				curr++;
+			}
+		}
+		catch (Exception e) {
+			System.out.println(e);
+		}
+
+		return results;
 	}
 
 	public SearchResult[] spatialSearch(String query, SearchRegion region,
