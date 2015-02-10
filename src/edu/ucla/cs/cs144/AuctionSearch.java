@@ -50,14 +50,22 @@ public class AuctionSearch implements IAuctionSearch {
 			//obtain ScoreDoc array from docs
 			ScoreDoc[] hits = topDocs.scoreDocs;
 
+			//check if there are results to return
+			if (hits.length < numResultsToSkip) {
+				return new SearchResult[0];
+			}
+
+			//check if there are enough results to return after the skip
+			if (hits.length - numResultsToSkip < numResultsToReturn) {
+				results = new SearchResult[hits.length - numResultsToSkip];
+			}
+
 			//retrieve matching documents after skipping numResultsToSkip
-			int curr = 0;
-			for (int i = numResultsToSkip - 1; i < hits.length; i++) {
-				Document doc = searcher.doc(hits[i].doc);
+			for (int i = 0; i < results.length; i++) {
+				Document doc = searcher.doc(hits[i + numResultsToSkip].doc);
 				String id = doc.get("id");
 				String name = doc.get("name");
-				results[curr] = new SearchResult(id, name);
-				curr++;
+				results[i] = new SearchResult(id, name);
 			}
 		}
 		catch (Exception e) {

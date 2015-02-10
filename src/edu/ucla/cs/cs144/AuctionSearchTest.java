@@ -39,5 +39,7 @@ public class AuctionSearchTest {
 		System.out.println(item);
 
 		// Add your own test here
+		//String query = "superman";
+
 	}
 }
