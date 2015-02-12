@@ -7,12 +7,14 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashSet;
 import java.text.SimpleDateFormat;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.PreparedStatement;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.analysis.Analyzer;
@@ -78,11 +80,66 @@ public class AuctionSearch implements IAuctionSearch {
 	public SearchResult[] spatialSearch(String query, SearchRegion region,
 			int numResultsToSkip, int numResultsToReturn) {
 		// TODO: Your code here!
-		return new SearchResult[0];
+		SearchResult[] basicResultArr = basicSearch(query, 0, 0);
+		SearchResult[] spatialResultArr = null;
+		try {
+			Connection conn = DbManager.getConnection(true);
+
+			String lxly = region.getLx() + " " + region.getLy();
+			String rxly = region.getRx() + " " + region.getLy();
+			String rxry = region.getRx() + " " + region.getRy();
+			String lxry = region.getLx() + " " + region.getRy();
+
+			String polygonStr = lxly + ", " + rxly + ", " + rxry + ", " + lxry + ", " + lxly;
+
+			String queryStr = "SELECT ItemID FROM ItemLocation WHERE MBRContains(GeomFromText('Polygon((" + polygonStr + "))'), Coord)";
+			PreparedStatement query = conn.prepareStatement(queryStr);
+			ResultSet result = query.executeQuery();
+			HashSet<String> resultHash = new HashSet<>();
+
+			while (result.next()) {
+				resultHash.add(result.getString("ItemID"));
+			}
+
+			ArrayList<SearchResult> totalResults = new ArrayList<>();
+
+			for (int i = 0; i < basicResultArr.length; i++) {
+				String itemID = basicResultArr[i].getItemId();
+				if (resultHash.contains(itemID)) { // if search result is inside the specific region, add to spatial results
+					totalResults.add(basicResultArr[i]);
+				}
+			}
+
+			int length = numResultsToReturn;
+
+			if (totalResults.size() < numResultsToReturn + numResultsToSkip) {
+				length = totalResults.size() - numResultsToSkip;
+			}
+
+			spatialResultArr = new SearchResult[length];
+
+			for (int i = 0; i < length; i++) {
+				spatialResultArr[i] = totalResults.get(numResultsToSkip+i);
+			}
+
+			conn.close(); // close the connection after done
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+
+		return spatialResultArr;
 	}
 
 	public String getXMLDataForItemId(String itemId) {
 		// TODO: Your code here!
+		String resultXML = "";
+		try {
+			Connection conn = DbManager.getConnection(true);
+
+			conn.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 		return "";
 	}
 	
