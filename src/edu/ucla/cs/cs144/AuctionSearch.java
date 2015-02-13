@@ -164,9 +164,11 @@ public class AuctionSearch implements IAuctionSearch {
 				String name = result.getString("Name");
 				String currently = getCurrencyString(result.getFloat("Currently"));
 
-				String buyprice = getCurrencyString(result.getFloat("BuyPrice"));
+				String buyprice = getCurrencyString(result.getFloat("Buy_Price"));
 
-				String firstbid = getCurrencyString(result.getFloat("FirstBid"));
+				String firstbid = getCurrencyString(result.getFloat("First_Bid"));
+
+        String numberOfBids = result.getString("Number_of_Bids");
 
 				String started = result.getString("Started"); 
 				started = getTimeString(started);
@@ -210,9 +212,9 @@ public class AuctionSearch implements IAuctionSearch {
 					categories.add(result.getString("Category"));
 				}
 
-				result = query4.executeQuery();
-				result.first();
-				String numberOFBids = result.getString("COUNT(*)");
+				//result = query4.executeQuery();
+				//result.first();
+				//String numberOFBids = result.getString("COUNT(*)");
 
 				/*
 				 * Builds DOM Tree
@@ -245,7 +247,7 @@ public class AuctionSearch implements IAuctionSearch {
 				root.appendChild(elementFirstBid);
 
 				Element elementNumBids = doc.createElement("Number_of_Bids");
-				elementNumBids.appendChild(doc.createTextNode(numberOFBids));
+				elementNumBids.appendChild(doc.createTextNode(numberOfBids));
 				root.appendChild(elementNumBids);
 
 				Element elementBids = doc.createElement("Bids");
