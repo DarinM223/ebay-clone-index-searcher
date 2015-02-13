@@ -32,8 +32,23 @@ run:
      [java] java.lang.IllegalArgumentException: numHits must be > 0; please use TotalHitCountCollector if you just need the total hit count
      [java] Spatial Seacrh
      [java] Received 0 results
-     [java] java.sql.SQLException: Column 'BuyPrice' not found.
      [java] XML data for ItemId: 1497595357
+     [java] <?xml version="1.0" encoding="UTF-8"?>
+     [java] <Item ItemID="1497595357">
+     [java] <Name>PINK FLOYD~Syd Barretts First Trip~SEALED~dvd</Name>
+     [java] <Category>Movies &amp; Television</Category>
+     [java] <Category>Music &amp; Concert</Category>
+     [java] <Category>Video, Film</Category>
+     [java] <Currently>$9.99</Currently>
+     [java] <Buy_Price>$0.00</Buy_Price>
+     [java] <First_Bid>$9.99</First_Bid>
+     [java] <Number_of_Bids>0</Number_of_Bids>
+     [java] <Bids/>
+     [java] <Country>USA</Country>
+     [java] <Started>Dec-16-01 19:13:16</Started>
+     [java] <Ends>Dec-23-01 19:13:16</Ends>
+     [java] <Seller Rating="1024" UserID="rarevideo4sale"/>
+     [java] </Item>
      [java] 
      [java] Basic Search Query: superman
      [java] Received 68 results
