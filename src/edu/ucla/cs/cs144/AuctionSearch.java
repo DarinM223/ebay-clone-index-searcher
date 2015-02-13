@@ -101,8 +101,8 @@ public class AuctionSearch implements IAuctionSearch {
 			String polygonStr = lxly + ", " + rxly + ", " + rxry + ", " + lxry + ", " + lxly;
 
 			String queryStr = "SELECT ItemID FROM ItemLocation WHERE MBRContains(GeomFromText('Polygon((" + polygonStr + "))'), Coord)";
-			PreparedStatement query = conn.prepareStatement(queryStr);
-			ResultSet result = query.executeQuery();
+			PreparedStatement q = conn.prepareStatement(queryStr);
+			ResultSet result = q.executeQuery();
 			HashSet<String> resultHash = new HashSet<>();
 
 			while (result.next()) {
@@ -144,13 +144,13 @@ public class AuctionSearch implements IAuctionSearch {
 		try {
 			Connection conn = DbManager.getConnection(true);
 
-			PreparedStatement query = connection.prepareStatement("SELECT * FROM Item WHERE ItemID = ?");
+			PreparedStatement query = conn.prepareStatement("SELECT * FROM Item WHERE ItemID = ?");
 			query.setString(1, itemId);
-			ResultSet itemData = query.executeQuery();
+			ResultSet result  = query.executeQuery();
 
-			itemData.first(); // get the first instance of item (best match)
+			result.first(); // get the first instance of item (best match)
 
-			if (itemData.getRow() != 0) {
+			if (result.getRow() != 0) {
 				DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 				DocumentBuilder builder = factory.newDocumentBuilder();
 				org.w3c.dom.Document doc = builder.newDocument();
@@ -162,14 +162,11 @@ public class AuctionSearch implements IAuctionSearch {
 
 				String userid = result.getString("Seller");
 				String name = result.getString("Name");
-				String currently = result.getString("Currently");
-				currently = getCurrencyString(currently);
+				String currently = getCurrencyString(result.getFloat("Currently"));
 
-				String buyprice = result.getString("BuyPrice"); 
-				buyprice = getCurrencyString(buyprice);
+				String buyprice = getCurrencyString(result.getFloat("BuyPrice"));
 
-				String firstbid = result.getString("FirstBid");
-				firstbid = getCurrencyString(firstbid); 
+				String firstbid = getCurrencyString(result.getFloat("FirstBid"));
 
 				String started = result.getString("Started"); 
 				started = getTimeString(started);
@@ -180,7 +177,7 @@ public class AuctionSearch implements IAuctionSearch {
 				String location = result.getString("Location");
 
 				boolean hasLatitudeLongitude;
-				String latitude, longitude;
+				String latitude = null, longitude = null;
 				try {
 					latitude = result.getString("Latitude");
 					longitude = result.getString("Longitude");
@@ -192,15 +189,15 @@ public class AuctionSearch implements IAuctionSearch {
 				String country = result.getString("Country");
 				String description = result.getString("Description");
 
-				PreparedStatement query2 = connection.prepareStatement("SELECT * FROM Seller WHERE UserID = ?");
-				PreparedStatement query3 = connection.prepareStatement("SELECT * FROM ItemCategory WHERE ItemID = ?");
-				PreparedStatement query4 = connection.prepareStatement("SELECT COUNT(*) FROM Bid WHERE ItemID = ?");
-				PreparedStatement query5 = connection.prepareStatement("SELECT * FROM Bid WHERE ItemID = ?")
+				PreparedStatement query2 = conn.prepareStatement("SELECT * FROM Seller WHERE UserID = ?");
+				PreparedStatement query3 = conn.prepareStatement("SELECT * FROM ItemCategory WHERE ItemID = ?");
+				PreparedStatement query4 = conn.prepareStatement("SELECT COUNT(*) FROM Bid WHERE ItemID = ?");
+				PreparedStatement query5 = conn.prepareStatement("SELECT * FROM Bid WHERE ItemID = ?");
 
-				query2.setString(userid);
-				query3.setString(itemId);
-				query4.setString(itemId);
-				query5.setString(itemId);
+				query2.setString(1, userid);
+				query3.setString(1, itemId);
+				query4.setString(1, itemId);
+				query5.setString(1, itemId);
 
 				result = query2.executeQuery();
 				result.first();
@@ -259,8 +256,7 @@ public class AuctionSearch implements IAuctionSearch {
 					bidTime = getTimeString(bidTime);
 
 					// TODO: Convert to currency format?
-					String bidAmount = result.getString("Amount")	
-					bidAmount = getCurrencyString(bidAmount);
+					String bidAmount = getCurrencyString(result.getFloat("Amount"));
 
 					Element elementBid = doc.createElement("Bid");
 					PreparedStatement queryBid = conn.prepareStatement("SELECT * FROM Bidder WHERE UserID = ?");
@@ -325,12 +321,12 @@ public class AuctionSearch implements IAuctionSearch {
 				root.appendChild(elementEnds);
 
 				Element elementSeller = doc.createElement("Seller");	
-				elementSeller.setAttribute("Rating"< rating);
+				elementSeller.setAttribute("Rating", rating);
 				elementSeller.setAttribute("UserID", userid);
 				root.appendChild(elementSeller);
 
 				TransformerFactory transFactory = TransformerFactory.newInstance();
-				Transformer transformer = transFactory.newTranformer();
+				Transformer transformer = transFactory.newTransformer();
 				// I don't know wtf this is lol
 				transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
 				transformer.setOutputProperty(OutputKeys.METHOD, "xml");

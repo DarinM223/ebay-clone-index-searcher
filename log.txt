@@ -1,0 +1,46 @@
+Buildfile: /media/sf_vm-shared/project3-searcher/build.xml
+
+init:
+
+compile:
+     [echo] project3-searcher: /media/sf_vm-shared/project3-searcher/build.xml
+
+run:
+     [java] Reply: Test message
+     [java] Basic Seacrh Query: superman
+     [java] Received 20 results
+     [java] 1049430907: SUPERMAN WITH GEN 13 AND OTHER PRESTIGE BOOKS
+     [java] 1045823269: Superman Doomsday Hunter Prey tpb
+     [java] 1047761329: Superman Domed Lunchbox/Carrying Case NEW!!
+     [java] 1048743351: Superman Lunchbox Hallmark Ornament
+     [java] 1048263344: SUPERMAN DAILY PLANET Magnet PICTURE FRAME
+     [java] 1046936194: SUPERMAN METAL LUNCH BOX
+     [java] 1047388061: SUPERMAN #405 NM "BATMAN" (1985)
+     [java] 1048647703: SUPERMAN COMIC N0.199 - AUSTRALIAN ISSUE
+     [java] 1047692530: BATMAN OR SUPERMAN CHRISTMAS ORNAMENTS HOT!!
+     [java] 1045602125: Superman Postcards 1972 Super COOL!!!!!!
+     [java] 1049272510: SUPERMAN FRIEND MIRROR PICTURE FRAME
+     [java] 1496788150: Lois And Clark, Superman Pilot, Dean Cain VHS
+     [java] 1046639674: SUPERMAN 1940 ACTION COMIC
+     [java] 1494232488: SHAW'S COMEDY MAN AND SUPERMAN PROGRAM
+     [java] 1497574160: SHAW'S COMEDY MAN AND SUPERMAN PROGRAM
+     [java] 1678142392: new underoos superman t-shirt size 8
+     [java] 1048720097: RARE 1965 SUPERMAN GUM CARDS TV REEVES # 5
+     [java] 1046820567: !! EMBOSSED Superman 'BUST OUT' TIN LUNCH BOX
+     [java] 1046290388: SUPERMAN comic book 22 books 203 309 uqk
+     [java] 1048008620: John Buscema J.I. Superman Rough, pg 11
+     [java] java.lang.IllegalArgumentException: numHits must be > 0; please use TotalHitCountCollector if you just need the total hit count
+     [java] Spatial Seacrh
+     [java] Received 0 results
+     [java] java.sql.SQLException: Column 'BuyPrice' not found.
+     [java] XML data for ItemId: 1497595357
+     [java] 
+     [java] Basic Search Query: superman
+     [java] Received 68 results
+     [java] Basic Search Query: kitchenware
+     [java] Received 1462 results
+     [java] Basic Search Query: star trek
+     [java] Received 770 results
+
+BUILD SUCCESSFUL
+Total time: 1 second
