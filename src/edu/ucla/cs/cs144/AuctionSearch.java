@@ -47,7 +47,7 @@ public class AuctionSearch implements IAuctionSearch {
 	
 	public SearchResult[] basicSearch(String query, int numResultsToSkip, 
 			int numResultsToReturn) {
-		SearchResult[] results = new SearchResult[numResultsToReturn];
+		SearchResult[] results = null;
 		try {
 			//create new instance of search engine
 			IndexSearcher searcher = new IndexSearcher(DirectoryReader.open(FSDirectory.open(new File("/var/lib/lucene/ebay/"))));
@@ -68,6 +68,8 @@ public class AuctionSearch implements IAuctionSearch {
 			//check if there are enough results to return after the skip
 			if (hits.length - numResultsToSkip < numResultsToReturn) {
 				results = new SearchResult[hits.length - numResultsToSkip];
+			} else {
+				results = new SearchResult[numResultsToReturn];
 			}
 
 			//retrieve matching documents after skipping numResultsToSkip
@@ -88,7 +90,7 @@ public class AuctionSearch implements IAuctionSearch {
 	public SearchResult[] spatialSearch(String query, SearchRegion region,
 			int numResultsToSkip, int numResultsToReturn) {
 		// TODO: Your code here!
-		SearchResult[] basicResultArr = basicSearch(query, 0, 0);
+		SearchResult[] basicResultArr = basicSearch(query, 0, 99999999);
 		SearchResult[] spatialResultArr = null;
 		try {
 			Connection conn = DbManager.getConnection(true);
@@ -168,7 +170,7 @@ public class AuctionSearch implements IAuctionSearch {
 
 				String firstbid = getCurrencyString(result.getFloat("First_Bid"));
 
-        String numberOfBids = result.getString("Number_of_Bids");
+				String numberOfBids = result.getString("Number_of_Bids");
 
 				String started = result.getString("Started"); 
 				started = getTimeString(started);
