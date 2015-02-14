@@ -88,7 +88,7 @@ public class AuctionSearch implements IAuctionSearch {
 	public SearchResult[] spatialSearch(String query, SearchRegion region,
 			int numResultsToSkip, int numResultsToReturn) {
 		// TODO: Your code here!
-		SearchResult[] basicResultArr = basicSearch(query, 0, 0);
+		SearchResult[] basicResultArr = basicSearch(query, 0, numResultsToSkip + numResultsToReturn);
 		SearchResult[] spatialResultArr = null;
 		try {
 			Connection conn = DbManager.getConnection(true);
@@ -168,7 +168,7 @@ public class AuctionSearch implements IAuctionSearch {
 
 				String firstbid = getCurrencyString(result.getFloat("First_Bid"));
 
-        String numberOfBids = result.getString("Number_of_Bids");
+        		String numberOfBids = result.getString("Number_of_Bids");
 
 				String started = result.getString("Started"); 
 				started = getTimeString(started);
