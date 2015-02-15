@@ -209,7 +209,6 @@ public class AuctionSearch implements IAuctionSearch {
 				String rating = result.getString("Rating");
 
 				result = query3.executeQuery();
-				result.first();
 				ArrayList<String> categories = new ArrayList<>();
 				while (result.next()) {
 					categories.add(result.getString("Category"));

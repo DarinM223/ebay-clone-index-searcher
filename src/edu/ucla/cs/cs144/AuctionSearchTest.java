@@ -63,5 +63,10 @@ public class AuctionSearchTest {
     for (SearchResult result: spatialResults) {
        System.out.println(result.getItemId() + ": " + result.getName());
     }
+
+    itemId = "1043402767";
+    item = as.getXMLDataForItemId(itemId);
+    System.out.println("XML data for ItemId: " + itemId);
+    System.out.println(item);
 	}
 }
