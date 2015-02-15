@@ -238,9 +238,6 @@ public class AuctionSearch implements IAuctionSearch {
 				elementCurrently.appendChild(doc.createTextNode(currently));
 				root.appendChild(elementCurrently);
 
-				Element elementDescription = doc.createElement("Description");
-				elementDescription.appendChild(doc.createTextNode(description));
-				root.appendChild(elementDescription);
 
 				if (buyprice != null) {
 					Element elementBuyPrice = doc.createElement("Buy_Price");
@@ -337,6 +334,10 @@ public class AuctionSearch implements IAuctionSearch {
 				elementSeller.setAttribute("Rating", rating);
 				elementSeller.setAttribute("UserID", userid);
 				root.appendChild(elementSeller);
+				
+				Element elementDescription = doc.createElement("Description");
+				elementDescription.appendChild(doc.createTextNode(description));
+				root.appendChild(elementDescription);
 
 				TransformerFactory transFactory = TransformerFactory.newInstance();
 				Transformer transformer = transFactory.newTransformer();
