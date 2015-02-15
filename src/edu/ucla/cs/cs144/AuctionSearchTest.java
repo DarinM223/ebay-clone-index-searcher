@@ -56,12 +56,12 @@ public class AuctionSearchTest {
 		System.out.println("Basic Search Query: " + query);
 		System.out.println("Received " + basicResults.length + " results");
 
-    //query = "superman";
-    //SearchResult[] spatialResults = as.spatialSearch(query, region, 0 , 200);
-    //System.out.println("Spatial Search Query: " + query);
-    //System.out.println("Received " + spatialResults.length + " results");
-    //for (SearchResult result: spatialResults) {
-    //    System.out.println(result.getItemId() + ": " + result.getName());
-    //}
+    query = "superman";
+    spatialResults = as.spatialSearch(query, region, 0 , 200);
+    System.out.println("Spatial Search Query: " + query);
+    System.out.println("Received " + spatialResults.length + " results");
+    for (SearchResult result: spatialResults) {
+       System.out.println(result.getItemId() + ": " + result.getName());
+    }
 	}
 }

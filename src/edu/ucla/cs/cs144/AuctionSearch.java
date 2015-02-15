@@ -90,7 +90,7 @@ public class AuctionSearch implements IAuctionSearch {
 	public SearchResult[] spatialSearch(String query, SearchRegion region,
 			int numResultsToSkip, int numResultsToReturn) {
 		// TODO: Your code here!
-		SearchResult[] basicResultArr = basicSearch(query, 0, numResultsToSkip + numResultsToReturn);
+		SearchResult[] basicResultArr = basicSearch(query, 0, 99999999);
 		SearchResult[] spatialResultArr = null;
 		try {
 			Connection conn = DbManager.getConnection(true);
@@ -100,14 +100,17 @@ public class AuctionSearch implements IAuctionSearch {
 			String rxry = region.getRx() + " " + region.getRy();
 			String lxry = region.getLx() + " " + region.getRy();
 
-			String polygonStr = lxly + ", " + rxly + ", " + rxry + ", " + lxry + ", " + lxly;
+			String polygonStr = lxly + "," + rxly + "," + rxry + "," + lxry + "," + lxly;
 
 			String queryStr = "SELECT ItemID FROM ItemLocation WHERE MBRContains(GeomFromText('Polygon((" + polygonStr + "))'), Coord)";
+			System.out.println(queryStr);
+
 			PreparedStatement q = conn.prepareStatement(queryStr);
 			ResultSet result = q.executeQuery();
 			HashSet<String> resultHash = new HashSet<>();
 
 			while (result.next()) {
+				System.out.println("Fooo!");
 				resultHash.add(result.getString("ItemID"));
 			}
 
