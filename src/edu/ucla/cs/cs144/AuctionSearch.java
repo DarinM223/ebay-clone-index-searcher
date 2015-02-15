@@ -188,6 +188,8 @@ public class AuctionSearch implements IAuctionSearch {
 					longitude = result.getString("Longitude");
 					hasLatitudeLongitude = true;
 				} catch (SQLException e) {
+					latitude = null;
+					longitude = null;
 					hasLatitudeLongitude = false;
 				}
 
@@ -317,6 +319,7 @@ public class AuctionSearch implements IAuctionSearch {
 
 				// TODO: I don't know if I have to escape characters b/c I'm using XML Docment builder instead of concating strings
 				elementLocation.appendChild(doc.createTextNode(location));
+				root.appendChild(elementLocation);
 
 				Element elementCountry = doc.createElement("Country");
 				elementCountry.appendChild(doc.createTextNode(country));
@@ -369,6 +372,7 @@ public class AuctionSearch implements IAuctionSearch {
 	}
 
 	private String getCurrencyString(float num) {
+		if (num == 0) return null;
 		return String.format("$%.2f", num);
 	}
 	
