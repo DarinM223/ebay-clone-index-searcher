@@ -90,7 +90,7 @@ public class AuctionSearch implements IAuctionSearch {
 	public SearchResult[] spatialSearch(String query, SearchRegion region,
 			int numResultsToSkip, int numResultsToReturn) {
 		// TODO: Your code here!
-		SearchResult[] basicResultArr = basicSearch(query, 0, 99999999);
+		SearchResult[] basicResultArr = basicSearch(query, 0, numResultsToSkip + numResultsToReturn);
 		SearchResult[] spatialResultArr = null;
 		try {
 			Connection conn = DbManager.getConnection(true);
@@ -110,7 +110,6 @@ public class AuctionSearch implements IAuctionSearch {
 			HashSet<String> resultHash = new HashSet<>();
 
 			while (result.next()) {
-				System.out.println("Fooo!");
 				resultHash.add(result.getString("ItemID"));
 			}
 
