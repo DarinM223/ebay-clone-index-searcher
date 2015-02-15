@@ -214,10 +214,6 @@ public class AuctionSearch implements IAuctionSearch {
 					categories.add(result.getString("Category"));
 				}
 
-				//result = query4.executeQuery();
-				//result.first();
-				//String numberOFBids = result.getString("COUNT(*)");
-
 				/*
 				 * Builds DOM Tree
 				 */
@@ -240,9 +236,15 @@ public class AuctionSearch implements IAuctionSearch {
 				elementCurrently.appendChild(doc.createTextNode(currently));
 				root.appendChild(elementCurrently);
 
-				Element elementBuyPrice = doc.createElement("Buy_Price");
-				elementBuyPrice.appendChild(doc.createTextNode(buyprice));
-				root.appendChild(elementBuyPrice);
+				Element elementDescription = doc.createElement("Description");
+				elementDescription.appendChild(doc.createTextNode(description));
+				root.appendChild(elementDescription);
+
+				if (buyprice != null) {
+					Element elementBuyPrice = doc.createElement("Buy_Price");
+					elementBuyPrice.appendChild(doc.createTextNode(buyprice));
+					root.appendChild(elementBuyPrice);
+				}
 
 				Element elementFirstBid = doc.createElement("First_Bid");
 				elementFirstBid.appendChild(doc.createTextNode(firstbid));
@@ -277,13 +279,17 @@ public class AuctionSearch implements IAuctionSearch {
 					elementBidUser.setAttribute("Rating", bidUserRating);
 					elementBidUser.setAttribute("UserID", bidUserID);
 
-					Element elementBidLocation = doc.createElement("Location");
-					elementBidLocation.appendChild(doc.createTextNode(bidUserLocation));
-					elementBidUser.appendChild(elementBidLocation);
+					if (bidUserLocation != null) {
+						Element elementBidLocation = doc.createElement("Location");
+						elementBidLocation.appendChild(doc.createTextNode(bidUserLocation));
+						elementBidUser.appendChild(elementBidLocation);
+					}
 
-					Element elementBidCountry = doc.createElement("Country");
-					elementBidCountry.appendChild(doc.createTextNode(bidUserCountry));
-					elementBidUser.appendChild(elementBidCountry);
+					if (bidUserCountry != null) {
+						Element elementBidCountry = doc.createElement("Country");
+						elementBidCountry.appendChild(doc.createTextNode(bidUserCountry));
+						elementBidUser.appendChild(elementBidCountry);
+					}
 
 					elementBid.appendChild(elementBidUser);
 
